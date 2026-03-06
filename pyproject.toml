@@ -1,0 +1,43 @@
+[project]
+name = "curso-fastapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]",
+]
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.38.2",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.5",
+    "taskipy>=1.14.1",
+]
+
+# --- Configuração do Ruff (Linter e Formatter) ---
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+# Seleção de regras (E/F = Pyflakes/Pycodestyle, I = isort, N = pep8-naming, UP = pyupgrade)
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "-p no:warning"
+
+[tool.taskipy.tasks]
+lint = "ruff check"
+pre_format = "ruff check --fix"
+format = "ruff format"
+run = "fastapi dev fastapi_zero/app.py"
+test = "pytest -s -x --cov=fastapi_zero -vv"
+post_test = "coverage html"
